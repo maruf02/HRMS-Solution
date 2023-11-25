@@ -11,6 +11,7 @@ import SignInPage from "./Pages/SignInPage/SignInPage.jsx";
 import SignUpPage from "./Pages/SignUpPage/SignUpPage.jsx";
 import JobAddPage from "./Pages/JobAddUpdateViewPage/JobAddPage.jsx";
 import JobUpdatePage from "./Pages/JobAddUpdateViewPage/JobUpdatePage.jsx";
+import JobApplicationPage from "./Pages/JobApplicationPage/JobApplicationPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,7 @@ const router = createBrowserRouter([
       {
         path: "/jobs",
         element: <JobPage></JobPage>,
+        loader: () => fetch("http://localhost:5000/mongoose/joboffer"),
       },
       {
         path: "/jobsAdd",
@@ -32,8 +34,16 @@ const router = createBrowserRouter([
         loader: () => fetch("http://localhost:5000/mongoose/joboffer"),
       },
       {
-        path: "/jobsUpdate",
+        path: "/jobsUpdate/:id",
         element: <JobUpdatePage></JobUpdatePage>,
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/mongoose/joboffer/${params.id}`),
+      },
+      {
+        path: "/application/:id",
+        element: <JobApplicationPage></JobApplicationPage>,
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/mongoose/joboffer/${params.id}`),
       },
       {
         path: "/signIn",

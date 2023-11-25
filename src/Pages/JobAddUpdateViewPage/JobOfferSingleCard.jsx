@@ -1,5 +1,8 @@
-import moment from "moment";
+// import moment from "moment";
+import moment from "moment/moment";
 import React from "react";
+import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 // **************
 
@@ -17,7 +20,41 @@ const JobOfferSingleCard = ({ job }) => {
 
   // *******************
 
-  // *******************
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`http://localhost:5000/mongoose/joboffer/${id}`, {
+          method: "DELETE",
+        })
+          .then((res) => {
+            if (!res.ok) {
+              throw new Error(`HTTP error! Status: ${res.status}`);
+            }
+            return res.json();
+          })
+          .then((data) => {
+            console.log(data);
+            if (data && (data.deletedCount > 0 || data._id)) {
+              Swal.fire("Deleted!", "Your file has been deleted.", "success");
+            } else {
+              Swal.fire("Error", "Failed to delete the file.", "error");
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            Swal.fire("Error", "Failed to delete the file.", "error");
+          });
+      }
+    });
+  };
 
   return (
     <div>
@@ -41,8 +78,15 @@ const JobOfferSingleCard = ({ job }) => {
           </p>
         </div>
         <div className="flex flex-row gap-6 justify-end ">
-          <button className="btn btn-outline btn-accent p-2  ">Update</button>
-          <button className="btn btn-outline btn-accent px-4 ">X</button>
+          <Link to={`/jobsUpdate/${job._id}`}>
+            <button className="btn btn-outline btn-accent p-2  ">Update</button>
+          </Link>
+          <button
+            onClick={() => handleDelete(job._id)}
+            className="btn btn-outline btn-accent px-4 "
+          >
+            X
+          </button>
         </div>
       </div>
     </div>
