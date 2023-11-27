@@ -1,7 +1,6 @@
 import React from "react";
 import useAxiosSecure from "../../../../CustomHooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
-import { FaTrashAlt, FaUsers } from "react-icons/fa";
 import Swal from "sweetalert2";
 
 const AllUsers = () => {
@@ -162,9 +161,9 @@ const AllUsers = () => {
                   ) : (
                     <button
                       onClick={() => handleMakeHr(user)}
-                      className="btn btn-md bg-red-500"
+                      className="btn btn-md bg-red-500 text-white"
                     >
-                      <button>Make Hr</button>
+                      Make HR
                     </button>
                   )}
                 </td>
@@ -173,7 +172,7 @@ const AllUsers = () => {
                     <>
                       <button
                         onClick={() => handleApprove(user)}
-                        className="btn bg-red-500"
+                        className="btn bg-red-500 text-white"
                       >
                         Pending
                       </button>

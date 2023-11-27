@@ -19,6 +19,8 @@ import TestRoute from "./Pages/TestRoute/TestRoute.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import DashBoardPage from "./Pages/DashBoard/DashBoardPage/DashBoardPage.jsx";
 import AllUsers from "./Pages/DashBoard/AdminPage/AllUsers/AllUsers.jsx";
+import AdminRoute from "./Authentication/PrivateRoutes/AdminRoute.jsx";
+import HrRoute from "./Authentication/PrivateRoutes/HrRoute.jsx";
 
 const queryClient = new QueryClient();
 
@@ -82,8 +84,20 @@ const router = createBrowserRouter([
     element: <DashBoardPage></DashBoardPage>,
     children: [
       {
-        path: "users",
-        element: <AllUsers></AllUsers>,
+        path: "allusers",
+        element: (
+          <AdminRoute>
+            <AllUsers></AllUsers>,
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "hrusers",
+        element: (
+          <HrRoute>
+            <AllUsers></AllUsers>,
+          </HrRoute>
+        ),
       },
     ],
   },

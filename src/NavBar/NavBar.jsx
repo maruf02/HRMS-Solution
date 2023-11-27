@@ -6,7 +6,7 @@ import "./Navbar.css";
 import { AuthContext } from "../Authentication/AuthProvider/AuthProvider";
 
 const NavBar = () => {
-  console.log(vite_key);
+  // console.log(vite_key);
   const { user, logOut } = useContext(AuthContext);
   const handleSignOut = () => {
     logOut().then().catch();
