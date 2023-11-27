@@ -6,6 +6,10 @@ import { FaGoogle } from "react-icons/fa";
 import { updateProfile } from "firebase/auth";
 import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 
+const imgbb = import.meta.env.VITE_imgbb_api;
+// console.log(imgbb);
+const imageApi = `https://api.imgbb.com/1/upload?key=${imgbb}`;
+
 const SignUpPage = () => {
   const [googleUser, setGoogleUser] = useState(null);
   const [signUpError, setSignUpError] = useState("");
@@ -16,11 +20,12 @@ const SignUpPage = () => {
   const navigate = useNavigate();
   const axiosPublic = useAxiosPublic();
 
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
+    // console.log(e);
     e.preventDefault();
     const form = new FormData(e.currentTarget);
     const name = form.get("name");
-    const image = form.get("ImageURL");
+    // const image = form.get("ImageURL");
     const email = form.get("email");
     const password = form.get("password");
     const role = form.get("Role");
@@ -28,6 +33,21 @@ const SignUpPage = () => {
     const salary = form.get("salary");
     const bank = form.get("bank");
     const status = "pending";
+    // const image = e.image[0];
+    // const image = e.target.files[0];
+    const imagef = form.get("image");
+    console.log("img", imagef);
+
+    const res = await axiosPublic.post(
+      imageApi,
+      { image: imagef },
+      {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      }
+    );
+    const image = res.data.data.display_url;
     const userInfo = {
       name,
       image,
@@ -38,7 +58,9 @@ const SignUpPage = () => {
       role,
       status,
     };
-    // console.log(userInfo);
+    // console.log("user", userInfo);
+
+    console.log("user", userInfo);
     // console.log(name, image, email, password);
     // console.log("role", role);
     //   create user
@@ -131,16 +153,21 @@ const SignUpPage = () => {
             <div className="form-control">
               <label className="label">
                 <span className="label-text text-2xl text-blue-600 font-semibold">
-                  ImageURL:
+                  Image :
                 </span>
               </label>
               <input
+                type="file"
+                name="image"
+                className="file-input file-input-bordered w-full max-w-md bg-white"
+              />
+              {/* <input
                 type="text"
                 name="ImageURL"
                 placeholder="Enter Your Image URL/Link"
                 className="input input-bordered bg-white text-black text-xl"
                 required
-              />
+              /> */}
             </div>
             <div className="form-control">
               <label className="label">
@@ -191,7 +218,9 @@ const SignUpPage = () => {
                 <option value="" disabled className="text-green-600">
                   Select Role
                 </option>
-                <option className="text-lg py-10">Admin</option>
+                <option disabled className="text-lg py-10">
+                  Admin
+                </option>
                 <option className="text-lg py-10">HR</option>
                 <option className="text-lg py-10">Employee</option>
               </select>
@@ -212,7 +241,7 @@ const SignUpPage = () => {
                   />
                   <label className="label">
                     <span className="label-text text-2xl text-blue-600 font-semibold">
-                      Salary:
+                      Salary:($)
                     </span>
                   </label>
                   <input
@@ -262,17 +291,17 @@ const SignUpPage = () => {
             <p className="text-green-700 text-lg">{signUpSuccess}</p>
           )}
           {signUpError && <p className="text-red-700 text-lg">{signUpError}</p>}
-          <p className="text-2xl text-blue-600 text-center">SignUp Via:</p>
+          {/* <p className="text-2xl text-blue-600 text-center">SignUp Via:</p> */}
           {/* google and github */}
           <div className="pb-10 mx-auto flex gap-5  ">
-            <div className=" mt-6 flex ">
+            {/* <div className=" mt-6 flex ">
               <button
                 onClick={handleSignInGoogle}
                 className="btn btn-primary text-xl"
               >
                 <FaGoogle></FaGoogle> Google
               </button>
-            </div>
+            </div> */}
             {/* <div className=" mt-6 flex ">
               <button className="btn btn-primary text-xl">
                 <FaGithub></FaGithub> Github

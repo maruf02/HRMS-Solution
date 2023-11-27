@@ -3,33 +3,43 @@ import { AuthContext } from "../../Authentication/AuthProvider/AuthProvider";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { FaGoogle } from "react-icons/fa";
+import useAxiosSecure from "../../CustomHooks/useAxiosSecure";
 
 const SignInPage = () => {
+  const axiosSecure = useAxiosSecure();
   const { signIn, signInGoogle } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
 
-  const handleSignIn = (e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
     const email = form.get("email");
     const password = form.get("password");
     // console.log(email, password);
 
-    signIn(email, password)
-      .then((res) => {
-        // console.log(res.user);
-        // console.log("object", email, password);
-        // alert("Login successful!");
-        Swal.fire("Login Successfully!");
-        navigate(location?.state ? location.state : "/");
-      })
-      .catch((err) => {
-        // console.error(err);
-        // console.error("error code:", err.code);
-        // toast.error(err.code);
-        Swal.fire(err.code);
-      });
+    const response = await axiosSecure.get(`/users/${email}`);
+    const userStatus = response.data?.status;
+    // console.log(userStatus);
+
+    if (userStatus === "pending" || userStatus === "fired") {
+      Swal.fire(`your Status is ${userStatus}. Please contact HR For login!!`);
+    } else {
+      signIn(email, password)
+        .then((res) => {
+          // console.log(res.user);
+          // console.log("object", email, password);
+          // alert("Login successful!");
+          Swal.fire("Login Successfully!");
+          navigate(location?.state ? location.state : "/");
+        })
+        .catch((err) => {
+          // console.error(err);
+          // console.error("error code:", err.code);
+          // toast.error(err.code);
+          Swal.fire(err.code);
+        });
+    }
   };
 
   const handleSignInGoogle = () => {
@@ -95,17 +105,17 @@ const SignInPage = () => {
               <button className="btn btn-primary text-2xl">Login</button>
             </div>
           </form>
-          <p className="text-2xl text-blue-600 text-center">SignIn Via:</p>
+          {/* <p className="text-2xl text-blue-600 text-center">SignIn Via:</p> */}
           {/* google and github */}
           <div className="pb-10 mx-auto flex gap-5  ">
-            <div className=" mt-6 flex ">
+            {/* <div className=" mt-6 flex ">
               <button
                 onClick={handleSignInGoogle}
                 className="btn btn-primary text-xl"
               >
                 <FaGoogle></FaGoogle> Google
               </button>
-            </div>
+            </div> */}
             {/* <div className=" mt-6 flex ">
               <button className="btn btn-primary text-xl">
                 <FaGithub></FaGithub> Github

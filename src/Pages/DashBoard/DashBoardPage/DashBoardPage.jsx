@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   FaAd,
   FaBook,
@@ -11,13 +11,17 @@ import {
   FaUsers,
   FaUtensils,
 } from "react-icons/fa";
-import { NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet } from "react-router-dom";
 import useAdmin from "../../../CustomHooks/useAdmin";
 import useHr from "../../../CustomHooks/useHr";
+import useEmployee from "../../../CustomHooks/useEmployee";
+import { AuthContext } from "../../../Authentication/AuthProvider/AuthProvider";
 
 const DashBoardPage = () => {
+  const { user } = useContext(AuthContext);
   const [isAdmin] = useAdmin();
   const [isHR] = useHr();
+  const [isEmployee] = useEmployee();
   return (
     <div className="flex text-white">
       {/* dashboard side bar */}
@@ -53,6 +57,32 @@ const DashBoardPage = () => {
                 <NavLink to="/dashboard/hrusers">
                   <FaUsers></FaUsers>
                   hr Users
+                </NavLink>
+              </li>
+            </>
+          ) : (
+            <></>
+          )}
+          {isEmployee ? (
+            <>
+              <li>
+                <Link className="bg-green-400 hover:bg-green-400 text-white">
+                  <FaUsers className="text-2xl text-red-600"></FaUsers>
+                  <p className="text-xl uppercase font-bold">
+                    {user.displayName}
+                  </p>
+                </Link>
+              </li>
+              <li>
+                <NavLink to="/dashboard/empHome">
+                  <FaHome></FaHome>
+                  Employee Home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/submitTask">
+                  <FaUsers></FaUsers>
+                  Submitted Task
                 </NavLink>
               </li>
             </>

@@ -53,6 +53,8 @@ const AllUsers = () => {
   };
 
   const handleApprove = (user) => {
+    // console.log(user.role);
+    const updatedStatusHR = user.role;
     const updatedStatusActive = "active";
     if (user.status === "active") {
       Swal.fire("Already Active");
@@ -70,6 +72,7 @@ const AllUsers = () => {
           axiosSecure
             .patch(`/users/admin/${user._id}`, {
               status: updatedStatusActive,
+              role: updatedStatusHR,
             })
             .then((res) => {
               console.log(res.data);
@@ -90,7 +93,8 @@ const AllUsers = () => {
   };
 
   const handleFireUser = (user) => {
-    const updatedStatusHR = "HR";
+    // console.log(user.role);
+    const updatedStatusHR = user.role;
     const updatedStatusFire = "fired";
     Swal.fire({
       title: "Are you sure to Fire?",
@@ -180,6 +184,7 @@ const AllUsers = () => {
                   ) : (
                     <></>
                   )}
+
                   {user.status === "active" ? (
                     <>
                       <button
@@ -206,12 +211,26 @@ const AllUsers = () => {
                   )}
                 </td>
                 <td>
-                  <button
-                    onClick={() => handleFireUser(user)}
-                    className="btn btn-ghost btn-md bg-green-500 text-white"
-                  >
-                    Fire
-                  </button>
+                  {user.role === "Admin" ? (
+                    <>
+                      <button
+                        onClick={() => handleFireUser(user)}
+                        disabled
+                        className="btn btn-ghost btn-md bg-green-500 text-white"
+                      >
+                        Fire
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => handleFireUser(user)}
+                        className="btn btn-ghost btn-md bg-green-500 text-white"
+                      >
+                        Fire
+                      </button>
+                    </>
+                  )}
                 </td>
               </tr>
             ))}

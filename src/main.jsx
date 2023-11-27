@@ -21,6 +21,8 @@ import DashBoardPage from "./Pages/DashBoard/DashBoardPage/DashBoardPage.jsx";
 import AllUsers from "./Pages/DashBoard/AdminPage/AllUsers/AllUsers.jsx";
 import AdminRoute from "./Authentication/PrivateRoutes/AdminRoute.jsx";
 import HrRoute from "./Authentication/PrivateRoutes/HrRoute.jsx";
+import SubmittedTask from "./Pages/DashBoard/EmployeePage/SubmittedTask/SubmittedTask.jsx";
+import EmployeeHomePage from "./Pages/DashBoard/EmployeePage/EmployeeHomePage/EmployeeHomePage.jsx";
 
 const queryClient = new QueryClient();
 
@@ -98,6 +100,14 @@ const router = createBrowserRouter([
             <AllUsers></AllUsers>,
           </HrRoute>
         ),
+      },
+      {
+        path: "empHome",
+        element: <EmployeeHomePage></EmployeeHomePage>,
+      },
+      {
+        path: "submitTask",
+        element: <SubmittedTask></SubmittedTask>,
       },
     ],
   },
