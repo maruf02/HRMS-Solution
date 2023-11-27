@@ -4,14 +4,17 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { FaGoogle } from "react-icons/fa";
 import { updateProfile } from "firebase/auth";
+import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 
 const SignUpPage = () => {
   const [googleUser, setGoogleUser] = useState(null);
   const [signUpError, setSignUpError] = useState("");
   const [signUpSuccess, setSignUpSuccess] = useState("");
+  const [selectedRole, setSelectedRole] = useState("");
   const { createUser, signInGoogle } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
+  const axiosPublic = useAxiosPublic();
 
   const handleSignUp = (e) => {
     e.preventDefault();
@@ -20,8 +23,24 @@ const SignUpPage = () => {
     const image = form.get("ImageURL");
     const email = form.get("email");
     const password = form.get("password");
+    const role = form.get("Role");
+    const designation = form.get("designation");
+    const salary = form.get("salary");
+    const bank = form.get("bank");
+    const status = "pending";
+    const userInfo = {
+      name,
+      image,
+      email,
+      designation,
+      salary,
+      bank,
+      role,
+      status,
+    };
+    // console.log(userInfo);
     // console.log(name, image, email, password);
-    // console.log("pass", password);
+    // console.log("role", role);
     //   create user
     setSignUpError("");
     setSignUpSuccess("");
@@ -44,16 +63,25 @@ const SignUpPage = () => {
           photoURL: image,
         })
           .then(() => {
+            axiosPublic.post("/users", userInfo).then((res) => {
+              if (res.data.insertedId) {
+                console.log("user added db", userInfo);
+                setGoogleUser(res.user);
+                setSignUpSuccess("User Created Successfully");
+                Swal.fire("User Created Successfully");
+                navigate(location?.state ? location.state : "/");
+              }
+            });
             // console.log(name, image);
             // window.location.reload();
           })
           .catch((error) => {
             // console.error("Error updating profile:", error);
           });
-        setGoogleUser(res.user);
-        setSignUpSuccess("User Created Successfully");
-        Swal.fire("User Created Successfully");
-        navigate(location?.state ? location.state : "/");
+        // setGoogleUser(res.user);
+        // setSignUpSuccess("User Created Successfully");
+        // Swal.fire("User Created Successfully");
+        // navigate(location?.state ? location.state : "/");
       })
       .catch((error) => {
         // console.error(error);
@@ -73,6 +101,11 @@ const SignUpPage = () => {
         // console.error(err);
       });
   };
+
+  const handleRoleChange = (event) => {
+    setSelectedRole(event.target.value);
+  };
+
   return (
     <div className="py-20">
       <div className="hero ">
@@ -136,6 +169,78 @@ const SignUpPage = () => {
                 className="input input-bordered bg-white text-black text-xl"
                 required
               />
+              <label className="label">
+                <span className="label-text text-2xl text-blue-600">
+                  SignUp AS:
+                </span>
+              </label>
+              {/* <input
+                type="password"
+                name="password"
+                placeholder="Enter Your Password"
+                className="input input-bordered bg-white text-black text-xl"
+                required
+              /> */}
+              <select
+                required
+                name="Role"
+                value={selectedRole}
+                onChange={handleRoleChange}
+                className="select select-bordered w-full text-white bg-slate-700 "
+              >
+                <option value="" disabled className="text-green-600">
+                  Select Role
+                </option>
+                <option className="text-lg py-10">Admin</option>
+                <option className="text-lg py-10">HR</option>
+                <option className="text-lg py-10">Employee</option>
+              </select>
+
+              {selectedRole === "Employee" || selectedRole === "HR" ? (
+                <>
+                  <label className="label">
+                    <span className="label-text text-2xl text-blue-600 font-semibold">
+                      Designation:
+                    </span>
+                  </label>
+                  <input
+                    type="text"
+                    name="designation"
+                    placeholder="Enter Your Name"
+                    className="input input-bordered bg-white text-black text-xl"
+                    required
+                  />
+                  <label className="label">
+                    <span className="label-text text-2xl text-blue-600 font-semibold">
+                      Salary:
+                    </span>
+                  </label>
+                  <input
+                    type="text"
+                    name="salary"
+                    placeholder="Enter Your Name"
+                    className="input input-bordered bg-white text-black text-xl"
+                    required
+                  />
+                  <label className="label">
+                    <span className="label-text text-2xl text-blue-600 font-semibold">
+                      Bank ACC Number:
+                    </span>
+                  </label>
+                  <input
+                    type="text"
+                    name="bank"
+                    placeholder="Enter Your Name"
+                    className="input input-bordered bg-white text-black text-xl"
+                    required
+                  />
+                </>
+              ) : (
+                ""
+              )}
+
+              {/*  */}
+
               <label className="pt-2">
                 <p className="text-xl text-blue-600">
                   Already SignUP? Please

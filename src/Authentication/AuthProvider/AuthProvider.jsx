@@ -10,6 +10,7 @@ import {
 } from "firebase/auth";
 import app from "../Firebase/Firebase.config";
 import axios from "axios";
+import useAxiosPublic from "../../CustomHooks/useAxiosPublic";
 // import { GoogleAuthProvider } from "firebase/auth";
 
 export const AuthContext = createContext(null);
@@ -19,6 +20,7 @@ const auth = getAuth(app);
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const axiosPublic = useAxiosPublic();
 
   const provider = new GoogleAuthProvider();
 
@@ -45,37 +47,44 @@ const AuthProvider = ({ children }) => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
       //
       const userEmail = currentUser?.email || user?.email;
-      const loggedUser = { email: userEmail };
+      // const loggedUser = { email: userEmail };
       //
       setUser(currentUser);
-      setLoading(false);
+      // setLoading(false); prev
       //
+      // if (currentUser) {
+      //   axios
+      //     .post("http://localhost:5000/jwt", loggedUser, {
+      //       withCredentials: true,
+      //     })
+      //     .then((res) => {
+      //       console.log("token response", res.data);
+      //     });
+      // } else {
+      //   axios
+      //     .post("http://localhost:5000/logout", loggedUser, {
+      //       withCredentials: true,
+      //     })
+      //     .then((res) => {
+      //       console.log(res.data);
+      //     });
+      // }
+      //
+
       if (currentUser) {
-        axios
-          .post(
-            "https://b8-a11-hotel-booking-server.vercel.app/jwt",
-            loggedUser,
-            {
-              withCredentials: true,
-            }
-          )
-          .then((res) => {
-            console.log("token response", res.data);
-          });
+        // get token and store client
+        const userInfo = { email: currentUser.email };
+        axiosPublic.post("/jwt", userInfo).then((res) => {
+          if (res.data.token) {
+            localStorage.setItem("access-token", res.data.token);
+            setLoading(false);
+          }
+        });
       } else {
-        axios
-          .post(
-            "https://b8-a11-hotel-booking-server.vercel.app/logout",
-            loggedUser,
-            {
-              withCredentials: true,
-            }
-          )
-          .then((res) => {
-            console.log(res.data);
-          });
+        // TODO: remove token (if token stored in the client side: Local storage, caching, in memory)
+        localStorage.removeItem("access-token");
+        setLoading(false);
       }
-      //
     });
     return () => {
       unSubscribe();

@@ -4,15 +4,20 @@ import { initializeApp } from "firebase/app";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 export const vite_key = import.meta.env.VITE_apiKey;
+export const vite_key1 = import.meta.env.VITE_authDomain;
+export const vite_key2 = import.meta.env.VITE_projectId;
+export const vite_key3 = import.meta.env.VITE_storageBucket;
+export const vite_key4 = import.meta.env.VITE_messagingSenderId;
+export const vite_key5 = import.meta.env.VITE_appId;
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDct1p3-Ea-z-Z_WyNARzkHOu0E4RJk3_s",
-  authDomain: "hrms-solution.firebaseapp.com",
-  projectId: "hrms-solution",
-  storageBucket: "hrms-solution.appspot.com",
-  messagingSenderId: "125408720864",
-  appId: "1:125408720864:web:19a9b5ecaa9b153d875d85",
+  apiKey: import.meta.env.VITE_apiKey,
+  authDomain: import.meta.env.VITE_authDomain,
+  projectId: import.meta.env.VITE_projectId,
+  storageBucket: import.meta.env.VITE_storageBucket,
+  messagingSenderId: import.meta.env.VITE_messagingSenderId,
+  appId: import.meta.env.VITE_appId,
 };
 
 // Initialize Firebase

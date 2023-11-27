@@ -1,9 +1,11 @@
 import moment from "moment/moment";
-import React from "react";
+import React, { useContext } from "react";
 import { FaArrowCircleRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../Authentication/AuthProvider/AuthProvider";
 
 const JobPageSingleCard = ({ job }) => {
+  const { user } = useContext(AuthContext);
   const { _id, jobTitle, jobType, skills, salary, today, date, description } =
     job;
   const todayFormate = today ? moment(today).local().format("D/MM/YY") : null;

@@ -12,6 +12,15 @@ import SignUpPage from "./Pages/SignUpPage/SignUpPage.jsx";
 import JobAddPage from "./Pages/JobAddUpdateViewPage/JobAddPage.jsx";
 import JobUpdatePage from "./Pages/JobAddUpdateViewPage/JobUpdatePage.jsx";
 import JobApplicationPage from "./Pages/JobApplicationPage/JobApplicationPage.jsx";
+import ViewJobApplicationPage from "./Pages/ViewJobApplicationPage/ViewJobApplicationPage.jsx";
+import PrivateRoutes from "./Authentication/PrivateRoutes/PrivateRoutes.jsx";
+import TestRoute from "./Pages/TestRoute/TestRoute.jsx";
+
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import DashBoardPage from "./Pages/DashBoard/DashBoardPage/DashBoardPage.jsx";
+import AllUsers from "./Pages/DashBoard/AdminPage/AllUsers/AllUsers.jsx";
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -40,6 +49,11 @@ const router = createBrowserRouter([
           fetch(`http://localhost:5000/mongoose/joboffer/${params.id}`),
       },
       {
+        path: "/application",
+        element: <ViewJobApplicationPage></ViewJobApplicationPage>,
+        loader: () => fetch("http://localhost:5000/mongoose/application"),
+      },
+      {
         path: "/application/:id",
         element: <JobApplicationPage></JobApplicationPage>,
         loader: ({ params }) =>
@@ -53,6 +67,24 @@ const router = createBrowserRouter([
         path: "/signUp",
         element: <SignUpPage></SignUpPage>,
       },
+      {
+        path: "/test",
+        element: (
+          <PrivateRoutes>
+            <TestRoute></TestRoute>
+          </PrivateRoutes>
+        ),
+      },
+    ],
+  },
+  {
+    path: "/dashBoard",
+    element: <DashBoardPage></DashBoardPage>,
+    children: [
+      {
+        path: "users",
+        element: <AllUsers></AllUsers>,
+      },
     ],
   },
 ]);
@@ -60,7 +92,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AuthProvider>
-      <RouterProvider router={router} />
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
     </AuthProvider>
   </React.StrictMode>
 );

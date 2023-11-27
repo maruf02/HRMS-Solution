@@ -20,7 +20,9 @@ const NavBar = () => {
         </NavLink>
       </li>
       <li>
-        <a>Parent</a>
+        <NavLink to="/dashBoard" className="activeNavLink ">
+          <button>DashBoard</button>
+        </NavLink>
       </li>
       <li>
         <NavLink to="/jobs" className="activeNavLink ">
@@ -87,9 +89,9 @@ const NavBar = () => {
                     </Link>
                   </li>
                   <li>
-                    {/* <Link to="/AddCategoriesRoom">
-                      <button>Add Categories Room</button>
-                    </Link> */}
+                    <Link to="/application">
+                      <button>View All Application</button>
+                    </Link>
                   </li>
                   {/* <li>
                     <Link>
