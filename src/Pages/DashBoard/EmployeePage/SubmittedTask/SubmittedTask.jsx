@@ -2,25 +2,106 @@ import moment from "moment";
 import { useForm } from "react-hook-form";
 import useAxiosSecure from "../../../../CustomHooks/useAxiosSecure";
 import ReactDatePicker from "react-datepicker";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import useUserEmail from "../../../../CustomHooks/useUserEmail";
+
+import ViewSubmitWork from "./ViewSubmitWork";
 
 const SubmittedTask = () => {
+  const [workSheet, setWorksheet] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
   const { register, handleSubmit, reset } = useForm();
   const axiosSecure = useAxiosSecure();
+  const [users, refetch] = useUserEmail();
 
+  // date formate
   const formattedDate = selectedDate
-    ? moment(selectedDate).format("MMM d, yy")
-    : "";
+    ? moment(selectedDate).local().format("MMM D,YY")
+    : null;
+
+  // console.log("ghj", users.email);
+
+  useEffect(() => {
+    const res = axiosSecure
+      .get(`/worksheet/${users.email}`)
+      .then((response) => {
+        setWorksheet(response.data);
+      });
+  });
+
+  // user email
+  // const email = user.email;
+  // console.log(user.email);
   const onSubmit = async (data) => {
+    const workHour = data.hours;
+    console.log("task hours", data.hours);
+
+    // const res = await axiosSecure.get(`/users/${user.email}`);
+    const salary = users.salary;
+    // time, hour, overtime, monthly salary calculation
+    const submitHour = parseInt(data.hours);
+    // console.log(submitHour);
+    const perHour = parseFloat(salary / 160).toFixed(2);
+    // console.log(perHour);
+    const overtimeCal = (workHour) => {
+      let overtimeCalculation;
+      // console.log("object", workHour);
+      if (workHour >= 8) {
+        let overtimeCalculation = workHour - 8;
+        return overtimeCalculation;
+      } else {
+        let overtimeCalculation = 0;
+        return overtimeCalculation;
+      }
+    };
+
+    const overtimeSalaryPerHour = 0.5;
+
+    console.log(overtimeCal(workHour));
+    const overtime = overtimeCal(workHour);
+    console.log("object", overtime);
+
+    const mainSalary = parseFloat(salary * perHour).toFixed(2);
+    const overTimeSalary = parseFloat(overtime * overtimeSalaryPerHour).toFixed(
+      2
+    );
+
+    console.log(mainSalary, overTimeSalary);
+
+    // assume monthly total hour =160hrs;
+
+    // time, hour, overtime, monthly salary calculation
+
     const task = {
       name: data.name,
+      email: users.email,
+      empId: users._id,
       category: data.category,
-      price: data.hours,
+      hours: data.hours,
+      overtime: overtime,
       note: data.note,
       date: formattedDate,
+      mainSalary: mainSalary,
+      overtimeSalary: overTimeSalary,
     };
     console.log(task);
+
+    axiosSecure.post("/worksheet", task).then((res) => {
+      if (res.data.insertedId) {
+        reset();
+        setSelectedDate(null);
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: `${name} added to your Worksheet`,
+          showConfirmButton: false,
+          timer: 2500,
+        });
+        // refetch cart to update the cart items count
+        refetch();
+      }
+    });
   };
 
   const handleDateChange = (date) => {
@@ -28,9 +109,9 @@ const SubmittedTask = () => {
   };
   return (
     <div>
-      <div className="flex flex-row gap-5 border h-screen w-full rounded-lg bg-gradient-to-r from-[#556b69] to-[#496b49]">
+      <div className="flex flex-col lg:flex-row gap-5 border h-screen w-full rounded-lg bg-gradient-to-r from-[#556b69] to-[#496b49]">
         {/* add submit task  */}
-        <div className="border w-1/2 h-full flex flex-col gap-5">
+        <div className="border w-full lg:w-1/3 h-full flex flex-col gap-5">
           <div className=" border-b-4 py-5 text-center text-4xl text-green-600 font-bold">
             Submit Your Task
           </div>
@@ -124,7 +205,14 @@ const SubmittedTask = () => {
         </div>
         {/* add submit task  */}
         {/* show submitted task task */}
-        <div className="border w-1/2 h-full"></div>
+        <div className="border w-full lg:w-2/3 h-full px-5">
+          <div className=" border-b-4 py-5 text-center text-4xl text-green-600 font-bold">
+            All Submitted Task
+          </div>
+          {workSheet.map((work) => (
+            <ViewSubmitWork key={work._id} work={work}></ViewSubmitWork>
+          ))}
+        </div>
       </div>
     </div>
   );

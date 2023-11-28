@@ -23,6 +23,8 @@ import AdminRoute from "./Authentication/PrivateRoutes/AdminRoute.jsx";
 import HrRoute from "./Authentication/PrivateRoutes/HrRoute.jsx";
 import SubmittedTask from "./Pages/DashBoard/EmployeePage/SubmittedTask/SubmittedTask.jsx";
 import EmployeeHomePage from "./Pages/DashBoard/EmployeePage/EmployeeHomePage/EmployeeHomePage.jsx";
+import EditSUbmiteTask from "./Pages/DashBoard/EmployeePage/SubmittedTask/EditSUbmiteTask.jsx";
+import EditSubmitTask from "./Pages/DashBoard/EmployeePage/SubmittedTask/EditSUbmiteTask.jsx";
 
 const queryClient = new QueryClient();
 
@@ -108,6 +110,12 @@ const router = createBrowserRouter([
       {
         path: "submitTask",
         element: <SubmittedTask></SubmittedTask>,
+      },
+      {
+        path: "taskUpdate/:email/:id",
+        element: <EditSubmitTask></EditSubmitTask>,
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/worksheet/${params.email}/${params.id}`),
       },
     ],
   },

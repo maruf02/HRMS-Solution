@@ -23,9 +23,9 @@ const DashBoardPage = () => {
   const [isHR] = useHr();
   const [isEmployee] = useEmployee();
   return (
-    <div className="flex text-white">
+    <div className="flex   text-white">
       {/* dashboard side bar */}
-      <div className="w-64 min-h-screen bg-orange-400">
+      <div className="w-64 min-h-screen   md:visible bg-orange-400">
         <ul className="menu p-4">
           {isAdmin ? (
             <>
@@ -70,7 +70,9 @@ const DashBoardPage = () => {
                   <FaUsers className="text-2xl text-red-600"></FaUsers>
                   <p className="text-xl uppercase font-bold">
                     {user.displayName}
-                  </p>
+                  </p>{" "}
+                  <br />
+                  <p>{user.email}</p>
                 </Link>
               </li>
               <li>
