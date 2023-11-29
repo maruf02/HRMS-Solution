@@ -58,7 +58,9 @@ const PayEmployee = () => {
   const totaloverTimeSalary = pay.reduce((total, item) => {
     return total + parseFloat(item.overtimeSalary);
   }, 0);
-  const totalSalary = totalMainSalary + totaloverTimeSalary;
+  const totalSalary = parseFloat(totalMainSalary + totaloverTimeSalary).toFixed(
+    2
+  );
   // console.log(totalSalary);
 
   function generateTransaction(length) {
@@ -193,7 +195,7 @@ const PayEmployee = () => {
         <div>
           <button
             onClick={handlePayment}
-            disabled={!month || !year}
+            disabled={!month || !year || totalSalary == 0}
             className="btn btn-outline btn-accent my-5 text-xl px-10"
           >
             Want to Proceed?
