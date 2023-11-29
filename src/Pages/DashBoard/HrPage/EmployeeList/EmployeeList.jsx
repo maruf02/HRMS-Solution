@@ -191,12 +191,11 @@ const EmployeeList = () => {
                   </Link> */}
                 </td>
                 <td>
-                  <button
-                    // onClick={() => handleApprove(user)}
-                    className="btn bg-green-500 text-white"
-                  >
-                    Details
-                  </button>
+                  <Link to={`/dashboard/employeeDetails/${user.email}`}>
+                    <button className="btn bg-green-500 text-white">
+                      Details
+                    </button>
+                  </Link>
                 </td>
               </tr>
             ))}
