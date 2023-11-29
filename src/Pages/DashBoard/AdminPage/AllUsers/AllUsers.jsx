@@ -2,6 +2,7 @@ import React from "react";
 import useAxiosSecure from "../../../../CustomHooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
+import UserReUseTable from "../../../../UserReUseTable/UserReUseTable";
 
 const AllUsers = () => {
   const axiosSecure = useAxiosSecure();
@@ -129,7 +130,7 @@ const AllUsers = () => {
   };
 
   return (
-    <div>
+    <div className="w-full">
       <div className="flex justify-evenly my-4">
         <h2 className="text-3xl">All Users</h2>
         <h2 className="text-3xl">Total Users: {users.length}</h2>
@@ -238,6 +239,14 @@ const AllUsers = () => {
         </table>
       </div>
     </div>
+
+    // <div>
+    //   <UserReUseTable>
+    //     onMakeHr={handleMakeHr}
+    //     onApprove={handleApprove}
+    //     onFireUser={handleFireUser}
+    //   </UserReUseTable>
+    // </div>
   );
 };
 

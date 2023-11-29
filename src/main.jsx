@@ -25,6 +25,8 @@ import SubmittedTask from "./Pages/DashBoard/EmployeePage/SubmittedTask/Submitte
 import EmployeeHomePage from "./Pages/DashBoard/EmployeePage/EmployeeHomePage/EmployeeHomePage.jsx";
 import EditSUbmiteTask from "./Pages/DashBoard/EmployeePage/SubmittedTask/EditSUbmiteTask.jsx";
 import EditSubmitTask from "./Pages/DashBoard/EmployeePage/SubmittedTask/EditSUbmiteTask.jsx";
+import EmployeeList from "./Pages/DashBoard/HrPage/EmployeeList/EmployeeList.jsx";
+import PayEmployee from "./Pages/DashBoard/HrPage/PayEmployee/PayEmployee.jsx";
 
 const queryClient = new QueryClient();
 
@@ -96,12 +98,22 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "hrusers",
+        path: "employeeList",
         element: (
           <HrRoute>
-            <AllUsers></AllUsers>,
+            <EmployeeList></EmployeeList>,
           </HrRoute>
         ),
+      },
+      {
+        path: "payment/:email",
+        element: (
+          <HrRoute>
+            <PayEmployee></PayEmployee>
+          </HrRoute>
+        ),
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/users/${params.email}`),
       },
       {
         path: "empHome",

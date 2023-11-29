@@ -4,20 +4,75 @@ import { useLoaderData } from "react-router-dom";
 import useAxiosSecure from "../../../../CustomHooks/useAxiosSecure";
 import ReactDatePicker from "react-datepicker";
 import moment from "moment";
+import useUserEmail from "../../../../CustomHooks/useUserEmail";
+import Swal from "sweetalert2";
 
 const EditSUbmiteTask = () => {
   const allData = useLoaderData();
-  const { name, date, category, hours, note } = allData;
+  const { _id, name, date, category, hours, note } = allData;
   const [selectedDate, setSelectedDate] = useState(null);
   const { register, handleSubmit, reset } = useForm();
   const axiosSecure = useAxiosSecure();
+  const [users, refetch] = useUserEmail();
   console.log(allData.name);
   const formattedDate = selectedDate
     ? moment(selectedDate).local().format("MMM D,YY")
     : null;
   //   const Date = date ? moment(date).local().format("MMMM D,YY") : null;
 
-  const onSubmit = async (data) => {};
+  const onSubmit = async (data) => {
+    const workHour = data.hours;
+    const salary = users.salary;
+    const submitHour = parseInt(data.hours);
+    const perHour = parseFloat(salary / 160).toFixed(2);
+    const overtimeCal = (workHour) => {
+      let overtimeCalculation;
+      // console.log("object", workHour);
+      if (workHour >= 8) {
+        let overtimeCalculation = workHour - 8;
+        return overtimeCalculation;
+      } else {
+        let overtimeCalculation = 0;
+        return overtimeCalculation;
+      }
+    };
+    const overtimeSalaryPerHour = 0.5;
+    const overtime = overtimeCal(workHour);
+    const mainSalary = parseFloat(salary * perHour).toFixed(2);
+    const overTimeSalary = parseFloat(overtime * overtimeSalaryPerHour).toFixed(
+      2
+    );
+
+    const reSubmit = {
+      name: data.name,
+      email: users.email,
+      empId: users._id,
+      category: data.category,
+      hours: data.hours,
+      overtime: overtime,
+      note: data.note,
+      date: formattedDate,
+      mainSalary: mainSalary,
+      overtimeSalary: overTimeSalary,
+    };
+    console.log(reSubmit);
+
+    axiosSecure.put(`/worksheet/${_id}`, reSubmit).then((res) => {
+      if (res.data.modifiedCount > 0) {
+        reset();
+        setSelectedDate(null);
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: `${name} added to your Worksheet`,
+          showConfirmButton: false,
+          timer: 2500,
+        });
+        // refetch cart to update the cart items count
+        refetch();
+      }
+    });
+  };
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
@@ -28,7 +83,7 @@ const EditSUbmiteTask = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="form-control w-full my-6">
             <label className="label">
-              <span className="label-text text-white">Task Name*{name}</span>
+              <span className="label-text text-white">Task Name* </span>
             </label>
             <input
               type="text"

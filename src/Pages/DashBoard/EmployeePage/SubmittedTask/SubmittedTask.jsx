@@ -17,10 +17,14 @@ const SubmittedTask = () => {
 
   // date formate
   const formattedDate = selectedDate
-    ? moment(selectedDate).local().format("MMM D,YY")
+    ? moment(selectedDate).local().format("MMMM D,YYYY")
     : null;
+  const month = selectedDate ? moment(selectedDate).format("MMMM") : null;
+  const year = selectedDate ? moment(selectedDate).format("YYYY") : null;
 
+  // console.log("formate", formattedDate, month, year);
   // console.log("ghj", users.email);
+  // console.log("formattedDate", formattedDate);
 
   useEffect(() => {
     const res = axiosSecure
@@ -41,9 +45,9 @@ const SubmittedTask = () => {
     const salary = users.salary;
     // time, hour, overtime, monthly salary calculation
     const submitHour = parseInt(data.hours);
-    // console.log(submitHour);
+    console.log("submitHour", submitHour);
     const perHour = parseFloat(salary / 160).toFixed(2);
-    // console.log(perHour);
+    console.log("perHour", perHour);
     const overtimeCal = (workHour) => {
       let overtimeCalculation;
       // console.log("object", workHour);
@@ -60,14 +64,14 @@ const SubmittedTask = () => {
 
     console.log(overtimeCal(workHour));
     const overtime = overtimeCal(workHour);
-    console.log("object", overtime);
+    console.log("overtime", overtime);
 
-    const mainSalary = parseFloat(salary * perHour).toFixed(2);
+    const mainSalary = parseFloat(8 * perHour).toFixed(2);
     const overTimeSalary = parseFloat(overtime * overtimeSalaryPerHour).toFixed(
       2
     );
 
-    console.log(mainSalary, overTimeSalary);
+    console.log("mainsalary,oversalary", mainSalary, overTimeSalary);
 
     // assume monthly total hour =160hrs;
 
@@ -82,6 +86,8 @@ const SubmittedTask = () => {
       overtime: overtime,
       note: data.note,
       date: formattedDate,
+      month: month,
+      year: year,
       mainSalary: mainSalary,
       overtimeSalary: overTimeSalary,
     };
