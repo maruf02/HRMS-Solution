@@ -79,10 +79,10 @@ const CheckOutFrom = () => {
         options={{
           style: {
             base: {
-              fontSize: "16px",
-              color: "#424770",
+              fontSize: "26px",
+              color: "green",
               "::placeholder": {
-                color: "#aab7c4",
+                color: "green",
               },
             },
             invalid: {
