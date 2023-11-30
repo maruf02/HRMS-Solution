@@ -12,7 +12,6 @@ Here is the Important Features of this project:
 
 - In this project MongoDB and Mongoose use at a time
 - This is Mern Stack Base project with firebase Auth Validation.
-- In this project you can add/edit/delete/view product after login
 - In this project you can see job fair where candidate can apply for the job
 - There are three role: Admin, HR and Employee
 - Admin: admin have all access. on admin route no one can access without admin, he can fire anyone
