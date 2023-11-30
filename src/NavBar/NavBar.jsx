@@ -19,6 +19,11 @@ const NavBar = () => {
           <button>Home</button>
         </NavLink>
       </li>
+      <li>
+        <NavLink to="/about" className="activeNavLink ">
+          <button>About</button>
+        </NavLink>
+      </li>
       {user && (
         <li>
           <NavLink to="/dashBoard" className="activeNavLink ">
@@ -29,6 +34,11 @@ const NavBar = () => {
       <li>
         <NavLink to="/jobs" className="activeNavLink ">
           <button>Career</button>
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/hContact" className="activeNavLink ">
+          <button>Contact Us</button>
         </NavLink>
       </li>
     </>

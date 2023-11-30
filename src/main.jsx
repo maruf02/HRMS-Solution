@@ -34,6 +34,9 @@ import ViewContactUsMssge from "./Pages/Homepage/ContactUs/ViewContactUsMssge.js
 import EmployeeRoute from "./Authentication/PrivateRoutes/EmployeeRoute.jsx";
 import AdminHomePage from "./Pages/DashBoard/AdminPage/AdminHomePage/AdminHomePage.jsx";
 import HrHomePage from "./Pages/DashBoard/HrPage/HrHomePage/HrHomePage.jsx";
+import Payment from "./Pages/DashBoard/Payment/Payment.jsx";
+import ContactUsPage from "./Pages/ContactUsPage/ContactUsPage.jsx";
+import WhyChooseUSPage from "./Pages/WhyChooseUSPage/WhyChooseUSPage.jsx";
 
 const queryClient = new QueryClient();
 
@@ -96,6 +99,14 @@ const router = createBrowserRouter([
       {
         path: "/signIn",
         element: <SignInPage></SignInPage>,
+      },
+      {
+        path: "/hContact",
+        element: <ContactUsPage></ContactUsPage>,
+      },
+      {
+        path: "/about",
+        element: <WhyChooseUSPage></WhyChooseUSPage>,
       },
       {
         path: "/signUp",
@@ -168,6 +179,14 @@ const router = createBrowserRouter([
         ),
         loader: ({ params }) =>
           fetch(`https://b8-a12-hrms-server.vercel.app/users/${params.email}`),
+      },
+      {
+        path: "stripe",
+        element: (
+          <PrivateRoutes>
+            <Payment></Payment>
+          </PrivateRoutes>
+        ),
       },
       {
         path: "employeeDetails/:email",

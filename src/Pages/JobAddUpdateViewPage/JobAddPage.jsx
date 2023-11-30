@@ -69,7 +69,7 @@ const JobAddPage = () => {
         if (data._id) {
           Swal.fire({
             title: "Success!",
-            text: "Brand Name & Image Insert Successfully",
+            text: "Data Insert Successfully",
             icon: "success",
             confirmButtonText: "Cool",
           });
