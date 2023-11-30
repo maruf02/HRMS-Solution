@@ -39,11 +39,9 @@ const JobFair = () => {
         modules={[Autoplay, Pagination, Navigation]}
         className="mySwiper"
         breakpoints={{
-          // when window width is >= 768px
           768: {
             slidesPerView: 2,
           },
-          // when window width is >= 1200px
           1200: {
             slidesPerView: 4,
           },

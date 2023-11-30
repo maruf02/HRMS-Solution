@@ -13,12 +13,12 @@ const Footer = () => {
               className="h-12 mr-3 sm:h-9"
               alt="automotive Logo"
             />
-            SeaSide Resort
+            HRMS Solution
           </div>
 
           <span className="block text-lg text-center text-gray-500 dark:text-gray-400">
             © 2023 HRMS Solution. All Rights Reserved by{" "}
-            <span className="text-green-700">SeaSide Resort</span>.
+            <span className="text-green-700">HRMS Solution</span>.
           </span>
 
           <ul className="flex justify-center mt-5 space-x-5">

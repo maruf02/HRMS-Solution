@@ -29,7 +29,7 @@ const EmployeeDetailsPage = () => {
 
     payment();
   }, [axiosSecure, email]);
-  console.log(paymentData);
+  // console.log(paymentData);
 
   const data = paymentData.map((pay) => ({
     name: pay.entry,

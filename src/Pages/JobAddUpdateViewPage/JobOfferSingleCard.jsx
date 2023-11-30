@@ -31,7 +31,7 @@ const JobOfferSingleCard = ({ job }) => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:5000/mongoose/joboffer/${id}`, {
+        fetch(`https://b8-a12-hrms-server.vercel.app/mongoose/joboffer/${id}`, {
           method: "DELETE",
         })
           .then((res) => {
@@ -41,7 +41,7 @@ const JobOfferSingleCard = ({ job }) => {
             return res.json();
           })
           .then((data) => {
-            console.log(data);
+            // console.log(data);
             if (data && (data.deletedCount > 0 || data._id)) {
               Swal.fire("Deleted!", "Your file has been deleted.", "success");
             } else {

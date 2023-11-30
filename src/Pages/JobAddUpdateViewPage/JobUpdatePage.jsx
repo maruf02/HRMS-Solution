@@ -35,7 +35,7 @@ const JobUpdatePage = () => {
     };
     // console.log(updateJob);
 
-    fetch(`http://localhost:5000/mongoose/joboffer/${_id}`, {
+    fetch(`https://b8-a12-hrms-server.vercel.app/mongoose/joboffer/${_id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -48,7 +48,7 @@ const JobUpdatePage = () => {
         if (data._id) {
           Swal.fire({
             title: "Success!",
-            text: "Brand Name & Image Updated Successfully",
+            text: "Data Updated Successfully",
             icon: "success",
             confirmButtonText: "Cool",
           });

@@ -56,7 +56,7 @@ const JobAddPage = () => {
 
     // Data Sent to server
 
-    fetch("http://localhost:5000/mongoose/joboffer", {
+    fetch("https://b8-a12-hrms-server.vercel.app/mongoose/joboffer", {
       method: "POST",
       headers: {
         "content-type": "application/json",

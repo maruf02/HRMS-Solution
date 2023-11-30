@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import useUserEmail from "../../../../CustomHooks/useUserEmail";
 
 import ViewSubmitWork from "./ViewSubmitWork";
+import { Link } from "react-router-dom";
 
 const SubmittedTask = () => {
   const [workSheet, setWorksheet] = useState([]);
@@ -15,7 +16,8 @@ const SubmittedTask = () => {
   const axiosSecure = useAxiosSecure();
   const [users, refetch] = useUserEmail();
 
-  // date formate
+  const reversedWorkSheet = [...workSheet].reverse();
+
   const formattedDate = selectedDate
     ? moment(selectedDate).local().format("MMMM D,YYYY")
     : null;
@@ -39,15 +41,15 @@ const SubmittedTask = () => {
   // console.log(user.email);
   const onSubmit = async (data) => {
     const workHour = data.hours;
-    console.log("task hours", data.hours);
+    // console.log("task hours", data.hours);
 
     // const res = await axiosSecure.get(`/users/${user.email}`);
     const salary = users.salary;
     // time, hour, overtime, monthly salary calculation
     const submitHour = parseInt(data.hours);
-    console.log("submitHour", submitHour);
+    // console.log("submitHour", submitHour);
     const perHour = parseFloat(salary / 160).toFixed(2);
-    console.log("perHour", perHour);
+    // console.log("perHour", perHour);
     const overtimeCal = (workHour) => {
       let overtimeCalculation;
       // console.log("object", workHour);
@@ -62,16 +64,16 @@ const SubmittedTask = () => {
 
     const overtimeSalaryPerHour = 0.5;
 
-    console.log(overtimeCal(workHour));
+    // console.log(overtimeCal(workHour));
     const overtime = overtimeCal(workHour);
-    console.log("overtime", overtime);
+    // console.log("overtime", overtime);
 
     const mainSalary = parseFloat(8 * perHour).toFixed(2);
     const overTimeSalary = parseFloat(overtime * overtimeSalaryPerHour).toFixed(
       2
     );
 
-    console.log("mainsalary,oversalary", mainSalary, overTimeSalary);
+    // console.log("mainsalary,oversalary", mainSalary, overTimeSalary);
 
     // assume monthly total hour =160hrs;
 
@@ -91,7 +93,7 @@ const SubmittedTask = () => {
       mainSalary: mainSalary,
       overtimeSalary: overTimeSalary,
     };
-    console.log(task);
+    // console.log(task);
 
     axiosSecure.post("/worksheet", task).then((res) => {
       if (res.data.insertedId) {
@@ -104,18 +106,25 @@ const SubmittedTask = () => {
           showConfirmButton: false,
           timer: 2500,
         });
-        // refetch cart to update the cart items count
+
         refetch();
       }
     });
   };
 
+  const handleDetails = (user) => {
+    const { date, hours, note } = user;
+    // Swal.fire({`name:${user.name} : Category:${user.category} :Date:${date} : Hour: ${hours}: Note: ${note}`});
+    Swal.fire(
+      `name: ${user.name} | Category: ${user.category} | Date: ${date} | Hour: ${hours} | Note: ${note}`
+    );
+  };
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
   return (
     <div>
-      <div className="flex flex-col lg:flex-row gap-5 border h-screen w-full rounded-lg bg-gradient-to-r from-[#556b69] to-[#496b49]">
+      <div className="flex flex-col lg:flex-row gap-5 border h-full w-full rounded-lg bg-gradient-to-r from-[#556b69] to-[#496b49]">
         {/* add submit task  */}
         <div className="border w-full lg:w-1/3 h-full flex flex-col gap-5">
           <div className=" border-b-4 py-5 text-center text-4xl text-green-600 font-bold">
@@ -156,7 +165,6 @@ const SubmittedTask = () => {
                     />
                   </div>
                   <div className="flex gap-6">
-                    {/* category */}
                     <div className="form-control w-full my-6">
                       <label className="label">
                         <span className="label-text text-white">Category*</span>
@@ -164,7 +172,7 @@ const SubmittedTask = () => {
                       <select
                         defaultValue="default"
                         {...register("category", { required: true })}
-                        className="select select-bordered w-full text-white bg-transparent input-accent"
+                        className="select select-bordered w-full text-white bg-green-800 input-accent"
                       >
                         <option disabled value="default">
                           Select a Task category
@@ -177,7 +185,6 @@ const SubmittedTask = () => {
                       </select>
                     </div>
 
-                    {/* price */}
                     <div className="form-control w-full my-6">
                       <label className="label">
                         <span className="label-text text-white">Hours*</span>
@@ -190,7 +197,7 @@ const SubmittedTask = () => {
                       />
                     </div>
                   </div>
-                  {/* recipe details */}
+
                   <div className="form-control">
                     <label className="label">
                       <span className="label-text text-white">Note:</span>
@@ -211,14 +218,62 @@ const SubmittedTask = () => {
         </div>
         {/* add submit task  */}
         {/* show submitted task task */}
-        <div className="border w-full lg:w-2/3 h-full px-5">
+
+        {/* show submitted task task */}
+        {/* show submitted task task */}
+        <div className="overflow-x-auto w-full hidden lg:block ">
+          <table className="table table-zebra w-full">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Hours</th>
+                <th>Submitted Date</th>
+                <th>Action</th>
+                <th>Resubmit</th>
+              </tr>
+            </thead>
+            <tbody>
+              {reversedWorkSheet.map((user, index) => (
+                <tr key={user._id}>
+                  <th>{index + 1}</th>
+                  <td>{user.name}</td>
+                  <td>{user.category}</td>
+                  <td>{user.hours}</td>
+                  <td>{user.date}</td>
+                  <td>
+                    <button
+                      onClick={() => handleDetails(user)}
+                      className="btn bg-green-500 text-white"
+                    >
+                      Details
+                    </button>
+                  </td>
+                  <td>
+                    <Link
+                      to={`/dashBoard/taskUpdate/${user.email}/${user._id}`}
+                    >
+                      <button className="btn btn-outline btn-accent p-2  ">
+                        Resubmit
+                      </button>
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {/* show submitted task task */}
+        <div className="border w-full lg:w-2/3 h-full px-5 lg:hidden ">
           <div className=" border-b-4 py-5 text-center text-4xl text-green-600 font-bold">
             All Submitted Task
           </div>
-          {workSheet.map((work) => (
+          {reversedWorkSheet.map((work) => (
             <ViewSubmitWork key={work._id} work={work}></ViewSubmitWork>
           ))}
         </div>
+        {/* show submitted task task */}
       </div>
     </div>
   );

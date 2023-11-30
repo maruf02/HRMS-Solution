@@ -6,8 +6,37 @@ import {
   FaTelegram,
   FaYoutube,
 } from "react-icons/fa";
+import useAxiosPublic from "../../../CustomHooks/useAxiosPublic";
+import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
 
 const ContactUs = () => {
+  const axiosPublic = useAxiosPublic();
+  const { register, handleSubmit, reset } = useForm();
+  const onSubmit = async (data) => {
+    const formData = {
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      message: data.message,
+    };
+    // console.log(formData);
+    axiosPublic.post("/contact", formData).then((res) => {
+      if (res.data.insertedId) {
+        reset();
+
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title:
+            "Your message successfully sent, We will receive you very soon!!",
+          showConfirmButton: false,
+          timer: 2500,
+        });
+      }
+    });
+  };
+
   return (
     <div className="py-10">
       <div className="hero text-white rounded-lg bg-gradient-to-r  from-[#78aca7]  to-[#60aa60]">
@@ -41,14 +70,15 @@ const ContactUs = () => {
             </div>
           </div>
           <div className="card shrink-0  text-white w-full lg:w-1/3    shadow-2xl bg-gradient-to-r from-[#556b69] to-[#496b49]">
-            <form className="card-body">
+            <form onSubmit={handleSubmit(onSubmit)} className="card-body">
               <div className="form-control">
                 <label className="label">
                   <span className="label-text">Name</span>
                 </label>
                 <input
-                  type="email"
+                  type="text"
                   placeholder="Name"
+                  {...register("name", { required: true })}
                   className="input input-bordered input-primary bg-transparent"
                   required
                 />
@@ -60,6 +90,7 @@ const ContactUs = () => {
                 <input
                   type="email"
                   placeholder="email"
+                  {...register("email", { required: true })}
                   className="input input-bordered input-primary bg-transparent"
                   required
                 />
@@ -69,17 +100,19 @@ const ContactUs = () => {
                   <span className="label-text">Phone</span>
                 </label>
                 <input
-                  type="email"
+                  type="text"
                   placeholder="Phone"
+                  {...register("phone", { required: true })}
                   className="input input-bordered input-primary bg-transparent"
                   required
                 />
               </div>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">Phone</span>
+                  <span className="label-text">Message</span>
                 </label>
                 <textarea
+                  {...register("message", { required: true })}
                   className="textarea textarea-secondary bg-transparent"
                   placeholder="Bio"
                 ></textarea>

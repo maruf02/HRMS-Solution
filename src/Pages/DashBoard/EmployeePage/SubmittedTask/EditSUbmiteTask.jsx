@@ -14,7 +14,7 @@ const EditSUbmiteTask = () => {
   const { register, handleSubmit, reset } = useForm();
   const axiosSecure = useAxiosSecure();
   const [users, refetch] = useUserEmail();
-  console.log(allData.name);
+  // console.log(allData.name);
   const formattedDate = selectedDate
     ? moment(selectedDate).local().format("MMM D,YY")
     : null;
@@ -55,7 +55,7 @@ const EditSUbmiteTask = () => {
       mainSalary: mainSalary,
       overtimeSalary: overTimeSalary,
     };
-    console.log(reSubmit);
+    // console.log(reSubmit);
 
     axiosSecure.put(`/worksheet/${_id}`, reSubmit).then((res) => {
       if (res.data.modifiedCount > 0) {
@@ -64,11 +64,11 @@ const EditSUbmiteTask = () => {
         Swal.fire({
           position: "top-end",
           icon: "success",
-          title: `${name} added to your Worksheet`,
+          title: `${name} Resubmit to your Worksheet`,
           showConfirmButton: false,
           timer: 2500,
         });
-        // refetch cart to update the cart items count
+
         refetch();
       }
     });
@@ -112,7 +112,6 @@ const EditSUbmiteTask = () => {
             />
           </div>
           <div className="flex gap-6">
-            {/* category */}
             <div className="form-control w-full my-6">
               <label className="label">
                 <span className="label-text text-white">Category*</span>
@@ -133,7 +132,6 @@ const EditSUbmiteTask = () => {
               </select>
             </div>
 
-            {/* price */}
             <div className="form-control w-full my-6">
               <label className="label">
                 <span className="label-text text-white">Hours*</span>
@@ -147,7 +145,7 @@ const EditSUbmiteTask = () => {
               />
             </div>
           </div>
-          {/* recipe details */}
+
           <div className="form-control">
             <label className="label">
               <span className="label-text text-white">Note:</span>

@@ -5,7 +5,7 @@ const ViewAppSingleCard = ({ app }) => {
   const { jobId, name, email, cover, resume, user } = app;
 
   useEffect(() => {
-    fetch(`http://localhost:5000/mongoose/joboffer/${jobId}`)
+    fetch(`https://b8-a12-hrms-server.vercel.app/mongoose/joboffer/${jobId}`)
       .then((res) => res.json())
       .then((data) => setJobOffer(data));
   });

@@ -12,7 +12,7 @@ const useEmployee = () => {
     queryFn: async () => {
       //   console.log("asking or checking is admin", user);
       const res = await axiosSecure.get(`/users/employee/${user.email}`);
-      console.log(res.data);
+      // console.log(res.data);
       return res.data?.employee;
     },
   });

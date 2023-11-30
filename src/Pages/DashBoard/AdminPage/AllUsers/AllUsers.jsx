@@ -36,13 +36,13 @@ const AllUsers = () => {
               role: updatedStatusHR,
             })
             .then((res) => {
-              console.log(res.data);
+              // console.log(res.data);
               if (res.data.modifiedCount > 0) {
                 refetch();
                 Swal.fire({
                   position: "top-end",
                   icon: "success",
-                  title: `${user.name} is an Approved Now!`,
+                  title: `${user.name} is an HR Now!`,
                   showConfirmButton: false,
                   timer: 1500,
                 });
@@ -76,7 +76,7 @@ const AllUsers = () => {
               role: updatedStatusHR,
             })
             .then((res) => {
-              console.log(res.data);
+              // console.log(res.data);
               if (res.data.modifiedCount > 0) {
                 refetch();
                 Swal.fire({
@@ -113,13 +113,13 @@ const AllUsers = () => {
             role: updatedStatusHR,
           })
           .then((res) => {
-            console.log(res.data);
+            // console.log(res.data);
             if (res.data.modifiedCount > 0) {
               refetch();
               Swal.fire({
                 position: "top-end",
                 icon: "success",
-                title: `${user.name} is an Approved Now!`,
+                title: `${user.name} is an Fired Now!`,
                 showConfirmButton: false,
                 timer: 1500,
               });

@@ -11,14 +11,25 @@ import {
   FaUsers,
   FaUtensils,
 } from "react-icons/fa";
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { IoIosLogOut } from "react-icons/io";
+import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import useAdmin from "../../../CustomHooks/useAdmin";
 import useHr from "../../../CustomHooks/useHr";
 import useEmployee from "../../../CustomHooks/useEmployee";
 import { AuthContext } from "../../../Authentication/AuthProvider/AuthProvider";
 
 const DashBoardPage = () => {
-  const { user } = useContext(AuthContext);
+  const { user, logOut } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleSignOut = () => {
+    logOut()
+      .then(() => {
+        navigate("/");
+      })
+      .catch();
+  };
+
   const [isAdmin] = useAdmin();
   const [isHR] = useHr();
   const [isEmployee] = useEmployee();
@@ -101,10 +112,19 @@ const DashBoardPage = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/order/contact">
+            <NavLink to="/dashboard/contactUs">
               <FaEnvelope></FaEnvelope>
               Contact
             </NavLink>
+          </li>
+
+          <li>
+            <Link>
+              <button onClick={handleSignOut} className="flex gap-2">
+                <IoIosLogOut className="text-2xl" />
+                Logout
+              </button>
+            </Link>
           </li>
         </ul>
       </div>

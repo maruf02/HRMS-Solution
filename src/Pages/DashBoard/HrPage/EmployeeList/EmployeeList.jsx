@@ -19,7 +19,7 @@ const EmployeeList = () => {
   });
 
   const handleApprove = (user) => {
-    console.log(user.role);
+    // console.log(user.role);
     const updatedStatusHR = user.role;
     const updatedStatusActive = "active";
     if (user.status === "active") {
@@ -41,7 +41,7 @@ const EmployeeList = () => {
               role: updatedStatusHR,
             })
             .then((res) => {
-              console.log(res.data);
+              // console.log(res.data);
               if (res.data.modifiedCount > 0) {
                 refetch();
                 Swal.fire({

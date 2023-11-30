@@ -80,7 +80,7 @@ const PayEmployee = () => {
         item.payMonth === month &&
         item.payYear === year
     );
-    console.log(emailExists);
+    // console.log(emailExists);
     if (emailExists) {
       // Email exists in paymentData
       Swal.fire("Already exists");
@@ -112,7 +112,7 @@ const PayEmployee = () => {
       payYear: year,
       transactionId: transactionId,
     };
-    console.log(payInfo);
+    // console.log(payInfo);
     axiosSecure.post("/payment", payInfo).then((res) => {
       if (res.data.insertedId) {
         Swal.fire({
@@ -120,7 +120,7 @@ const PayEmployee = () => {
           text: `{Payment Success to pay into ${name} ${email}}`,
           icon: "success",
         });
-        // refetch cart to update the cart items count
+
         navigate("/dashboard/employeeList");
       }
     });

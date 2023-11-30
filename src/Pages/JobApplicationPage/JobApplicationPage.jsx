@@ -24,9 +24,9 @@ const JobApplicationPage = () => {
       resume,
       user: user.email,
     };
-    console.log(application);
+    // console.log(application);
 
-    fetch("http://localhost:5000/mongoose/application", {
+    fetch("https://b8-a12-hrms-server.vercel.app/mongoose/application", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -39,7 +39,7 @@ const JobApplicationPage = () => {
         if (data._id) {
           Swal.fire({
             title: "Success!",
-            text: "Brand Name & Image Insert Successfully",
+            text: "Job Application Insert Successfully",
             icon: "success",
             confirmButtonText: "Cool",
           });

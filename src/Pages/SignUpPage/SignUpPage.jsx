@@ -36,7 +36,7 @@ const SignUpPage = () => {
     // const image = e.image[0];
     // const image = e.target.files[0];
     const imagef = form.get("image");
-    console.log("img", imagef);
+    // console.log("img", imagef);
 
     const res = await axiosPublic.post(
       imageApi,
@@ -60,7 +60,7 @@ const SignUpPage = () => {
     };
     // console.log("user", userInfo);
 
-    console.log("user", userInfo);
+    // console.log("user", userInfo);
     // console.log(name, image, email, password);
     // console.log("role", role);
     //   create user
@@ -87,7 +87,7 @@ const SignUpPage = () => {
           .then(() => {
             axiosPublic.post("/users", userInfo).then((res) => {
               if (res.data.insertedId) {
-                console.log("user added db", userInfo);
+                // console.log("user added db", userInfo);
                 setGoogleUser(res.user);
                 setSignUpSuccess("User Created Successfully");
                 Swal.fire("User Created Successfully");

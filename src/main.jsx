@@ -28,6 +28,12 @@ import EditSubmitTask from "./Pages/DashBoard/EmployeePage/SubmittedTask/EditSUb
 import EmployeeList from "./Pages/DashBoard/HrPage/EmployeeList/EmployeeList.jsx";
 import PayEmployee from "./Pages/DashBoard/HrPage/PayEmployee/PayEmployee.jsx";
 import EmployeeDetailsPage from "./Pages/DashBoard/HrPage/EmployeeDetailsPage/EmployeeDetailsPage.jsx";
+import EmpProgress from "./Pages/DashBoard/EmployeePage/EmpProgress/EmpProgress.jsx";
+import EmpPayHistory from "./Pages/DashBoard/EmployeePage/EmpPayHistory/EmpPayHistory.jsx";
+import ViewContactUsMssge from "./Pages/Homepage/ContactUs/ViewContactUsMssge.jsx";
+import EmployeeRoute from "./Authentication/PrivateRoutes/EmployeeRoute.jsx";
+import AdminHomePage from "./Pages/DashBoard/AdminPage/AdminHomePage/AdminHomePage.jsx";
+import HrHomePage from "./Pages/DashBoard/HrPage/HrHomePage/HrHomePage.jsx";
 
 const queryClient = new QueryClient();
 
@@ -44,29 +50,48 @@ const router = createBrowserRouter([
       {
         path: "/jobs",
         element: <JobPage></JobPage>,
-        loader: () => fetch("http://localhost:5000/mongoose/joboffer"),
+        loader: () =>
+          fetch("https://b8-a12-hrms-server.vercel.app/mongoose/joboffer"),
       },
       {
         path: "/jobsAdd",
-        element: <JobAddPage></JobAddPage>,
-        loader: () => fetch("http://localhost:5000/mongoose/joboffer"),
+        element: (
+          <PrivateRoutes>
+            <JobAddPage></JobAddPage>
+          </PrivateRoutes>
+        ),
+        loader: () =>
+          fetch("https://b8-a12-hrms-server.vercel.app/mongoose/joboffer"),
       },
       {
         path: "/jobsUpdate/:id",
         element: <JobUpdatePage></JobUpdatePage>,
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/mongoose/joboffer/${params.id}`),
+          fetch(
+            `https://b8-a12-hrms-server.vercel.app/mongoose/joboffer/${params.id}`
+          ),
       },
       {
         path: "/application",
-        element: <ViewJobApplicationPage></ViewJobApplicationPage>,
-        loader: () => fetch("http://localhost:5000/mongoose/application"),
+        element: (
+          <PrivateRoutes>
+            <ViewJobApplicationPage></ViewJobApplicationPage>
+          </PrivateRoutes>
+        ),
+        loader: () =>
+          fetch("https://b8-a12-hrms-server.vercel.app/mongoose/application"),
       },
       {
         path: "/application/:id",
-        element: <JobApplicationPage></JobApplicationPage>,
+        element: (
+          <PrivateRoutes>
+            <JobApplicationPage></JobApplicationPage>
+          </PrivateRoutes>
+        ),
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/mongoose/joboffer/${params.id}`),
+          fetch(
+            `https://b8-a12-hrms-server.vercel.app/mongoose/joboffer/${params.id}`
+          ),
       },
       {
         path: "/signIn",
@@ -88,14 +113,34 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashBoard",
-    element: <DashBoardPage></DashBoardPage>,
+    element: (
+      <PrivateRoutes>
+        <DashBoardPage></DashBoardPage>
+      </PrivateRoutes>
+    ),
     children: [
+      {
+        path: "adminHome",
+        element: (
+          <AdminRoute>
+            <AdminHomePage></AdminHomePage>
+          </AdminRoute>
+        ),
+      },
       {
         path: "allusers",
         element: (
           <AdminRoute>
             <AllUsers></AllUsers>,
           </AdminRoute>
+        ),
+      },
+      {
+        path: "hrHome",
+        element: (
+          <HrRoute>
+            <HrHomePage></HrHomePage>
+          </HrRoute>
         ),
       },
       {
@@ -107,6 +152,14 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "empProgress",
+        element: (
+          <HrRoute>
+            <EmpProgress></EmpProgress>,
+          </HrRoute>
+        ),
+      },
+      {
         path: "payment/:email",
         element: (
           <HrRoute>
@@ -114,7 +167,7 @@ const router = createBrowserRouter([
           </HrRoute>
         ),
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/users/${params.email}`),
+          fetch(`https://b8-a12-hrms-server.vercel.app/users/${params.email}`),
       },
       {
         path: "employeeDetails/:email",
@@ -124,21 +177,49 @@ const router = createBrowserRouter([
           </HrRoute>
         ),
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/users/${params.email}`),
+          fetch(`https://b8-a12-hrms-server.vercel.app/users/${params.email}`),
       },
       {
         path: "empHome",
-        element: <EmployeeHomePage></EmployeeHomePage>,
+        element: (
+          <EmployeeRoute>
+            <EmployeeHomePage></EmployeeHomePage>
+          </EmployeeRoute>
+        ),
+      },
+      {
+        path: "paymentHistory",
+        element: (
+          <EmployeeRoute>
+            <EmpPayHistory></EmpPayHistory>
+          </EmployeeRoute>
+        ),
       },
       {
         path: "submitTask",
-        element: <SubmittedTask></SubmittedTask>,
+        element: (
+          <EmployeeRoute>
+            <SubmittedTask></SubmittedTask>
+          </EmployeeRoute>
+        ),
       },
       {
+        path: "contactUs",
+        element: <ViewContactUsMssge></ViewContactUsMssge>,
+        loader: () => fetch("https://b8-a12-hrms-server.vercel.app/contact"),
+      },
+
+      {
         path: "taskUpdate/:email/:id",
-        element: <EditSubmitTask></EditSubmitTask>,
+        element: (
+          <EmployeeRoute>
+            <EditSubmitTask></EditSubmitTask>
+          </EmployeeRoute>
+        ),
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/worksheet/${params.email}/${params.id}`),
+          fetch(
+            `https://b8-a12-hrms-server.vercel.app/worksheet/${params.email}/${params.id}`
+          ),
       },
     ],
   },

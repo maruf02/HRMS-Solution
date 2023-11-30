@@ -54,7 +54,7 @@ const AuthProvider = ({ children }) => {
       //
       // if (currentUser) {
       //   axios
-      //     .post("http://localhost:5000/jwt", loggedUser, {
+      //     .post("https://b8-a12-hrms-server.vercel.app/jwt", loggedUser, {
       //       withCredentials: true,
       //     })
       //     .then((res) => {
@@ -62,7 +62,7 @@ const AuthProvider = ({ children }) => {
       //     });
       // } else {
       //   axios
-      //     .post("http://localhost:5000/logout", loggedUser, {
+      //     .post("https://b8-a12-hrms-server.vercel.app/logout", loggedUser, {
       //       withCredentials: true,
       //     })
       //     .then((res) => {
@@ -72,7 +72,6 @@ const AuthProvider = ({ children }) => {
       //
 
       if (currentUser) {
-        // get token and store client
         const userInfo = { email: currentUser.email };
         axiosPublic.post("/jwt", userInfo).then((res) => {
           if (res.data.token) {
@@ -81,7 +80,6 @@ const AuthProvider = ({ children }) => {
           }
         });
       } else {
-        // TODO: remove token (if token stored in the client side: Local storage, caching, in memory)
         localStorage.removeItem("access-token");
         setLoading(false);
       }

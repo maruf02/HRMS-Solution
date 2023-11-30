@@ -3,7 +3,7 @@ import { AuthContext } from "../AuthProvider/AuthProvider";
 import useEmployee from "../../CustomHooks/useEmployee";
 import { Navigate, useLocation } from "react-router-dom";
 
-const EmployeeRoute = () => {
+const EmployeeRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
   const [isEmployee, isEmployeeLoading] = useEmployee();
   const location = useLocation();
