@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 import { FaArrowCircleRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../Authentication/AuthProvider/AuthProvider";
+import Swal from "sweetalert2";
 
 const JobPageSingleCard = ({ job }) => {
   const { user } = useContext(AuthContext);
@@ -14,6 +15,7 @@ const JobPageSingleCard = ({ job }) => {
   const recordDate = moment(date);
 
   const daysDifference = recordDate.diff(currentDate, "days");
+
   return (
     <div>
       <div
@@ -25,10 +27,27 @@ const JobPageSingleCard = ({ job }) => {
             <h2 className="card-title text-white">{jobTitle}</h2>
             <h2 className="card-title text-white">{jobType}</h2>
             <p className="h-20">Salary: {salary}</p>
+            <p>
+              status:
+              {!daysDifference < 1 ? (
+                <span className="text-green-500"> open</span>
+              ) : (
+                <span className="text-red-500"> Close</span>
+              )}
+            </p>
 
             {/* Open the modal using document.getElementById('ID').showModal() method */}
             <div className="flex">
-              <button
+              {!daysDifference < 1 ? (
+                <Link to={`/application/${job._id}`}>
+                  <button className="btn btn-info">Apply</button>
+                </Link>
+              ) : (
+                <button disabled className="btn btn-info">
+                  Apply
+                </button>
+              )}
+              {/* <button
                 className="  text-lg text-white font-bold"
                 onClick={() => document.getElementById("my_modal").showModal()}
               >
@@ -38,12 +57,12 @@ const JobPageSingleCard = ({ job }) => {
                 <FaArrowCircleRight
                   className="mt-2 ml-2 text-white text-lg "
                   onClick={() =>
-                    document.getElementById("my_modal").showModal()
+                    document.getElementById("my_modal1").showModal()
                   }
                 ></FaArrowCircleRight>
-              </p>
+              </p> */}
             </div>
-            <dialog id="my_modal" className="modal">
+            {/* <dialog id="my_modal" className="modal">
               <div className="modal-box">
                 <h3 className="font-bold text-lg">{jobTitle}</h3>
                 <h3 className="font-bold text-lg">{jobType}</h3>
@@ -81,7 +100,7 @@ const JobPageSingleCard = ({ job }) => {
               <form method="dialog" className="modal-backdrop">
                 <button>close</button>
               </form>
-            </dialog>
+            </dialog> */}
             {/* Open the modal using document.getElementById('ID').showModal() method */}
           </div>
         </div>
